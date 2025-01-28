@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PDF_reader.SearchManager
+namespace PDF_reader.Settings_manager
 {
-    internal class Setting_manager
+    internal class SettingsManager
     {
-        private float _zoomLevel = 1.0f;
-        private const float ZoomStep = 0.1f;
-        private const float MaxZoom = 3.0f;
+        private static float _zoomLevel = 1.0f;
+        private const float ZoomStep = 1.0f;
+        private const float MaxZoom = 5.0f;
         private const float MinZoom = 0.5f;
 
         public float ZoomIn()

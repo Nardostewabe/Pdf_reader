@@ -1,0 +1,54 @@
+﻿<Window x:Class="PDF_reader.PDFReader.PdfView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PDF_reader.PDFReader"
+        mc:Ignorable="d"
+        Title="PdfView" Height="450" Width="800">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="Open" Click="OpenFile_Click"/>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="Zoom In" Click="ZoomIn_Click"/>
+                <MenuItem Header="Zoom Out" Click="ZoomOut_Click"/>
+            </MenuItem>
+            <MenuItem Header="Explore Books" Click="Books_clicked"/>
+        </Menu>
+
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+            <Button Content="Previous" Width="100" Click="PreviousPage_Click"/>
+            <Button Content="Next" Width="100" Click="NextPage_Click"/>
+        </StackPanel>
+
+
+        <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Margin="10">
+            <Image x:Name="PdfImage" Stretch="Uniform" />
+        </Border>
+
+        <StatusBar Grid.Row="3">
+            <StatusBarItem>
+                <TextBlock x:Name="PageStatus" Text="Page: 1/1" />
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Content="Zoom In" Click="ZoomIn_Click" />
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Content="Zoom Out" Click="ZoomOut_Click" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

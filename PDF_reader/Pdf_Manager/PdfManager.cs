@@ -20,7 +20,7 @@ namespace PDF_reader.Pdf_Manager
 
         public PdfManager()
         {
-            this.CurrentPage = 0;
+            CurrentPage = 1;
         }
 
         public int PageCount()
@@ -68,6 +68,42 @@ namespace PDF_reader.Pdf_Manager
         }
     }
 
+    public static void AddPdf(int userId, string fileName, string filePath)
+    {
+        using (var connection = DatabaseHandler.GetConnection())
+        {
+            var command = new SqlCommand("INSERT INTO PDFs (UserId, FileName, FilePath) VALUES (@UserId, @FileName, @FilePath)", connection);
+            command.Parameters.AddWithValue("@UserId", userId);
+            command.Parameters.AddWithValue("@FileName", fileName);
+            command.Parameters.AddWithValue("@FilePath", filePath);
+            command.ExecuteNonQuery();
+        }
     }
+
+    public static List<Pdf> GetUserPdfs(int userId)
+    {
+        var pdfs = new List<Pdf>();
+        using (var connection = DatabaseHandler.GetConnection())
+        {
+            var command = new SqlCommand("SELECT * FROM PDFs WHERE UserId = @UserId", connection);
+            command.Parameters.AddWithValue("@UserId", userId);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    pdfs.Add(new Pdf
+                    {
+                        PdfId = reader.GetInt32(0),
+                        FileName = reader.GetString(1),
+                        FilePath = reader.GetString(2)
+                    });
+                }
+            }
+        }
+        return pdfs;
+    }
+
+}
 
 

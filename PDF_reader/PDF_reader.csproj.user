@@ -7,10 +7,13 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="SearchManager\SearchWindow.xaml.cs">
+    <Compile Update="PDFReader\PdfView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Settings manager\SearchWindow.xaml.cs">
+    <Compile Update="Pdf_Manager\MyPDFBooks.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserHandler\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -18,10 +21,13 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="SearchManager\SearchWindow.xaml">
+    <Page Update="PDFReader\PdfView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Settings manager\SearchWindow.xaml">
+    <Page Update="Pdf_Manager\MyPDFBooks.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserHandler\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
