@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PDF_reader.Pdf_Manager;
 
 namespace PDF_reader.UserHandler
 {
@@ -29,17 +30,21 @@ namespace PDF_reader.UserHandler
             string username = UsernameTextBox.Text;
             string password = PasswordBox.Password;
 
-            if (UserManager.Login(username, password, out int userId))
+            UserManager User = new UserManager();
+
+
+            if (User.LoginUser(username, password))
             {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.SetUser(userId);
-                mainWindow.Show();
+                Mypdf MyWindow = new Mypdf();
+                MyWindow.Show();
                 this.Close();
             }
             else
             {
                 MessageBox.Show("Invalid username or password.");
             }
+
+
         }
 
         private void SignUp_Click(object sender, RoutedEventArgs e)
@@ -47,7 +52,9 @@ namespace PDF_reader.UserHandler
             string username = UsernameTextBox.Text;
             string password = PasswordBox.Password;
 
-            if (UserManager.SignUp(username, password))
+            UserManager User = new UserManager();
+
+            if (User.RegisterUser(username, password))
             {
                 MessageBox.Show("Account created! Please log in.");
             }
@@ -55,7 +62,7 @@ namespace PDF_reader.UserHandler
             {
                 MessageBox.Show("Username already exists.");
             }
-        }
 
+        }
     }
 }

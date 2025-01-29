@@ -61,7 +61,7 @@ namespace PDF_reader.Pdf_Manager {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PDF_reader;component/pdf_manager/mypdfbooks.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PDF_reader;V1.0.0.0;component/pdf_manager/mypdfbooks.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Pdf_Manager\MyPDFBooks.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

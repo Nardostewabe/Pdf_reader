@@ -18,14 +18,12 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="Open" Click="OpenFile_Click"/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="Zoom In" Click="ZoomIn_Click"/>
                 <MenuItem Header="Zoom Out" Click="ZoomOut_Click"/>
             </MenuItem>
-            <MenuItem Header="Explore Books" Click="Books_clicked"/>
         </Menu>
 
 

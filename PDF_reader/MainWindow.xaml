@@ -5,15 +5,19 @@
         WindowStartupLocation="CenterScreen">
 
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition />
+            <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-            
-        <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-            
-        </StackPanel>
 
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+
+            <TextBlock Name="welcome" Text="Welcome To PDF manager" HorizontalAlignment="Center"/>
+            <TextBlock Name="messg" Text="Your Personlized Pdf manager and reader. Please Log in or Sign up to continue." HorizontalAlignment="Center"/>
+
+            <Button Content="Go To User Page" Width="150px" Height="40px" Margin="20,20" Name="GoToUser" Click="GoToUserClicked"/>
+
+        </StackPanel>
+      
     </Grid>
 </Window>

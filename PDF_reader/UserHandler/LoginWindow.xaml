@@ -5,13 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PDF_reader.UserHandler"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800">
+        Title="User Window" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="UsernameTextBox" PlaceholderText="Enter Username" Margin="20"/>
-        <PasswordBox x:Name="PasswordBox" Margin="20,60,20,0"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20,120,20,0">
-            <Button Content="Login" Click="Login_Click" Width="100" Margin="10"/>
-            <Button Content="Sign Up" Click="SignUp_Click" Width="100" Margin="10"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="20*"/>
+
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Label Content="User Name"/>
+                <TextBox x:Name="UsernameTextBox" Margin="20,10,0,20" Width="300px" Height="30px" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Label Content="Password"/>
+                <PasswordBox x:Name="PasswordBox" Margin="20,10,0,20" Width="300px" HorizontalAlignment="Left" Height="30px"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20,0">
+                    <Button Content="Login" Click="Login_Click" Width="100" Margin="10"/>
+                    <Button Content="Sign Up" Click="SignUp_Click" Width="100" Margin="10"/>
+             </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

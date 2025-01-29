@@ -30,5 +30,16 @@ C:\Users\nardo\source\repos\PDF_reader\PDF_reader\bin\Debug\net8.0-windows\x86\p
 C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\PDF_reader_Content.g.cs
 C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\PDF_reader.sourcelink.json
 C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\PDFReader\PdfView.g.cs
-C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\Pdf_Manager\MyPDFBooks.g.cs
 C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\PDF_reader_MarkupCompile.lref
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\Pdf_Manager\Mypdf.g.cs
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\UserHandler\LoginWindow.g.cs
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\bin\Debug\net8.0-windows\System.Data.SqlClient.dll
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\bin\Debug\net8.0-windows\runtimes\win-arm64\native\sni.dll
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\bin\Debug\net8.0-windows\runtimes\win-x64\native\sni.dll
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\bin\Debug\net8.0-windows\runtimes\win-x86\native\sni.dll
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\bin\Debug\net8.0-windows\runtimes\unix\lib\net8.0\System.Data.SqlClient.dll
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Data.SqlClient.dll
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\PDFReader\PdfView.baml
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\Pdf_Manager\Mypdf.baml
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\UserHandler\LoginWindow.baml
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\App.baml

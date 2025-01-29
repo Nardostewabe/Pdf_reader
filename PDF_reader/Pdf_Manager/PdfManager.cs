@@ -8,6 +8,9 @@ using PdfiumViewer;
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
+using PDF_reader.DatabaseHandler;
+using System.Data.SqlClient;
+using static PDF_reader.Pdf_Manager.Mypdf;
 
 
 namespace PDF_reader.Pdf_Manager
@@ -34,7 +37,7 @@ namespace PDF_reader.Pdf_Manager
             {
                 if (_pdfDocument != null)
                 {
-                    _pdfDocument.Dispose();  // Dispose of the previous document if any.
+                    _pdfDocument.Dispose(); 
                 }
 
 
@@ -66,44 +69,68 @@ namespace PDF_reader.Pdf_Manager
             _pdfDocument?.Dispose();
             _pdfDocument = null;
         }
-    }
-
-    public static void AddPdf(int userId, string fileName, string filePath)
-    {
-        using (var connection = DatabaseHandler.GetConnection())
+        public bool AddPdf(string fileName, string filePath)
         {
-            var command = new SqlCommand("INSERT INTO PDFs (UserId, FileName, FilePath) VALUES (@UserId, @FileName, @FilePath)", connection);
-            command.Parameters.AddWithValue("@UserId", userId);
-            command.Parameters.AddWithValue("@FileName", fileName);
-            command.Parameters.AddWithValue("@FilePath", filePath);
-            command.ExecuteNonQuery();
-        }
-    }
-
-    public static List<Pdf> GetUserPdfs(int userId)
-    {
-        var pdfs = new List<Pdf>();
-        using (var connection = DatabaseHandler.GetConnection())
-        {
-            var command = new SqlCommand("SELECT * FROM PDFs WHERE UserId = @UserId", connection);
-            command.Parameters.AddWithValue("@UserId", userId);
-
-            using (var reader = command.ExecuteReader())
-            {
-                while (reader.Read())
+                using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
-                    pdfs.Add(new Pdf
+                    string query = "INSERT INTO PdfFiles (name, file_stream) OUTPUT INSERTED.stream_id VALUES (@FileName, (SELECT * FROM OPENROWSET(BULK @FilePath, SINGLE_BLOB) AS FileData))";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@FileName", fileName);
+                    cmd.Parameters.AddWithValue("@FilePath", filePath);
+
+                    conn.Open();
+                    object result = cmd.ExecuteNonQuery();
+                    return result != null;
+                }
+            
+        }
+        public static List<PdfFile> GetAllPdfs()
+        {
+            List<PdfFile> pdfList = new List<PdfFile>();
+
+            try
+            {
+                using (SqlConnection conn = DatabaseHelper.GetConnection())
+                {
+                    string query = "SELECT file_stream.PathName() AS filePath, creation_time FROM PdfFiles";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
                     {
-                        PdfId = reader.GetInt32(0),
-                        FileName = reader.GetString(1),
-                        FilePath = reader.GetString(2)
-                    });
+                        string filePath = reader["filePath"].ToString();
+                        string fileName = Path.GetFileName(filePath);
+                        pdfList.Add(new PdfFile
+                        {
+                            FileName = fileName,
+                            FilePath = filePath,
+                            DateAdded = Convert.ToDateTime(reader["creation_time"])
+                        });
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error retrieving PDFs: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return pdfList;
         }
-        return pdfs;
-    }
 
+        public bool DeletePdf(string fileName)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            {
+                string query = "DELETE FROM PdfFiles WHERE name = @FileName";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@FileName", fileName);
+
+                conn.Open();
+                int rowsAffected = cmd.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+        }
+    }
 }
 
 

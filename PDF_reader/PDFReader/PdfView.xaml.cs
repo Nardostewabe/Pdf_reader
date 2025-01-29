@@ -17,6 +17,7 @@ using PDF_reader.File_Handler;
 using PDF_reader.Navigation_Manager;
 using PDF_reader.Pdf_Manager;
 using PDF_reader.Settings_manager;
+using PdfiumViewer;
 
 namespace PDF_reader.PDFReader
 {
@@ -29,21 +30,25 @@ namespace PDF_reader.PDFReader
         private NavigationManager _navHandler;
         private FileHandler _fileManager = new FileHandler();
         private SettingsManager _settingsManager = new SettingsManager();
-        public PdfView()
+        public PdfView(string filePath)
         {
             InitializeComponent();
             _navHandler = new NavigationManager(_pdfManager);
+            LoadPdf(filePath);
         }
-        private void OpenFile_Click(object sender, RoutedEventArgs e)
+
+        private void LoadPdf(string filePath)
         {
-            string filePath = _fileManager.OpenFile();
-            if (!string.IsNullOrEmpty(filePath))
+            if (File.Exists(filePath))
             {
                 _pdfManager.LoadPDF(filePath);
                 DisplayPage();
             }
+            else
+            {
+                MessageBox.Show("File not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _pdfManager.Close();
@@ -59,12 +64,6 @@ namespace PDF_reader.PDFReader
         {
             float newZoom = _settingsManager.ZoomOut();
             DisplayPage(newZoom);
-
-        }
-
-        private void Books_clicked(object sender, RoutedEventArgs e)
-        {
-
 
         }
 

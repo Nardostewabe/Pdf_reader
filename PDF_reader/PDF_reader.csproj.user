@@ -10,7 +10,7 @@
     <Compile Update="PDFReader\PdfView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pdf_Manager\MyPDFBooks.xaml.cs">
+    <Compile Update="Pdf_Manager\Mypdf.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserHandler\LoginWindow.xaml.cs">
@@ -24,7 +24,7 @@
     <Page Update="PDFReader\PdfView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pdf_Manager\MyPDFBooks.xaml">
+    <Page Update="Pdf_Manager\Mypdf.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserHandler\LoginWindow.xaml">
