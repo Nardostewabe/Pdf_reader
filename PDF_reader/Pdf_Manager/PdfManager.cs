@@ -11,6 +11,8 @@ using System.Windows.Media.Imaging;
 using PDF_reader.DatabaseHandler;
 using System.Data.SqlClient;
 using static PDF_reader.Pdf_Manager.Mypdf;
+using PDF_reader.PDFReader;
+using System.Windows.Media.Media3D;
 
 
 namespace PDF_reader.Pdf_Manager
@@ -31,26 +33,11 @@ namespace PDF_reader.Pdf_Manager
             return this.TotalPages;
         }
 
-        public void LoadPDF(string filePath)
+        public int GetTotalPages()
         {
-            try
-            {
-                if (_pdfDocument != null)
-                {
-                    _pdfDocument.Dispose(); 
-                }
-
-
-                _pdfDocument = PdfDocument.Load(filePath);
-                TotalPages = _pdfDocument.PageCount;
-                CurrentPage = 0;
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            return _pdfDocument?.PageCount ?? 1;
         }
+
 
         public PdfDocument GetPdfDocument()
         {
@@ -60,30 +47,71 @@ namespace PDF_reader.Pdf_Manager
         public Bitmap RenderPage(int pageNumber, float scale = 1.0f)
         {
             if (_pdfDocument == null)
-                throw new InvalidOperationException("Invalid page number.");
+            {
+                MessageBox.Show("PDF document is not loaded.");
+                return null;
+            }
 
-            return (Bitmap)_pdfDocument.Render(pageNumber - 1, 800, 1000, scale, scale, PdfRenderFlags.Annotations);
+            if (pageNumber < 1 || pageNumber > _pdfDocument.PageCount)
+            {
+                MessageBox.Show("Invalid page number.");
+                return null;
+            }
+
+            
+            if (scale < 1.0f)
+                scale = 1.0f;
+
+            
+            var pageSize = _pdfDocument.PageSizes[pageNumber - 1];
+
+            if (pageSize.Width <= 0 || pageSize.Height <= 0)
+            {
+                MessageBox.Show("Invalid page size detected.");
+                return null;
+            }
+
+            
+            int width = (int)(pageSize.Width * scale);
+            int height = (int)(pageSize.Height * scale);
+
+            return (Bitmap)_pdfDocument.Render(pageNumber - 1, width, height, true);
         }
+
+
         public void Close()
         {
             _pdfDocument?.Dispose();
             _pdfDocument = null;
         }
-        public bool AddPdf(string fileName, string filePath)
+        public bool AddPdf(string filePath)
         {
+            try
+            {
+                byte[] fileBytes = File.ReadAllBytes(filePath);
+                string fileName = Path.GetFileName(filePath);
+
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
-                    string query = "INSERT INTO PdfFiles (name, file_stream) OUTPUT INSERTED.stream_id VALUES (@FileName, (SELECT * FROM OPENROWSET(BULK @FilePath, SINGLE_BLOB) AS FileData))";
+                    string query = "INSERT INTO PdfFiles (name, file_stream, creation_time) OUTPUT INSERTED.stream_id VALUES (@FileName, @FileData, @CreationTime)";
+
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@FileName", fileName);
-                    cmd.Parameters.AddWithValue("@FilePath", filePath);
+                    cmd.Parameters.AddWithValue("@FileData", fileBytes);
+                    cmd.Parameters.AddWithValue("@CreationTime", DateTime.Now);
 
                     conn.Open();
-                    object result = cmd.ExecuteNonQuery();
+                    object result = cmd.ExecuteScalar();
                     return result != null;
                 }
-            
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding PDF: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
         }
+
         public static List<PdfFile> GetAllPdfs()
         {
             List<PdfFile> pdfList = new List<PdfFile>();
@@ -92,7 +120,8 @@ namespace PDF_reader.Pdf_Manager
             {
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
-                    string query = "SELECT file_stream.PathName() AS filePath, creation_time FROM PdfFiles";
+                    // Modify the query to get the file name from the database
+                    string query = "SELECT name, file_stream.PathName() AS filePath, creation_time FROM PdfFiles";
                     SqlCommand cmd = new SqlCommand(query, conn);
 
                     conn.Open();
@@ -100,12 +129,18 @@ namespace PDF_reader.Pdf_Manager
                     while (reader.Read())
                     {
                         string filePath = reader["filePath"].ToString();
-                        string fileName = Path.GetFileName(filePath);
+                        string fileName = reader["name"].ToString();
+
+                        // Handle the DateTimeOffset correctly
+                        DateTime creationTime = reader["creation_time"] is DateTimeOffset
+                            ? ((DateTimeOffset)reader["creation_time"]).DateTime
+                            : Convert.ToDateTime(reader["creation_time"]);
+
                         pdfList.Add(new PdfFile
                         {
-                            FileName = fileName,
+                            FileName = fileName, // Use the name from the database
                             FilePath = filePath,
-                            DateAdded = Convert.ToDateTime(reader["creation_time"])
+                            DateAdded = creationTime
                         });
                     }
                 }
@@ -114,8 +149,10 @@ namespace PDF_reader.Pdf_Manager
             {
                 MessageBox.Show($"Error retrieving PDFs: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
             return pdfList;
         }
+
 
         public bool DeletePdf(string fileName)
         {
@@ -130,6 +167,31 @@ namespace PDF_reader.Pdf_Manager
                 return rowsAffected > 0;
             }
         }
+
+        public void LoadPDF(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    if (_pdfDocument != null)
+                    {
+                        _pdfDocument.Dispose(); // Dispose of previous document if any
+                    }
+
+                    _pdfDocument = PdfDocument.Load(filePath); // Load new document
+                }
+                else
+                {
+                    MessageBox.Show("File does not exist!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading PDF: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 }
 

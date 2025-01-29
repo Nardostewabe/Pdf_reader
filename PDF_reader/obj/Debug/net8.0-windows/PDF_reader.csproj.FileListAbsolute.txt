@@ -43,3 +43,5 @@ C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\PDFRe
 C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\Pdf_Manager\Mypdf.baml
 C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\UserHandler\LoginWindow.baml
 C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\App.baml
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\Downloads\Mydownloads.g.cs
+C:\Users\nardo\source\repos\PDF_reader\PDF_reader\obj\Debug\net8.0-windows\Downloads\Mydownloads.baml

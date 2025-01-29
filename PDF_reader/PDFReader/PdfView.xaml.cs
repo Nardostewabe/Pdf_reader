@@ -49,6 +49,7 @@ namespace PDF_reader.PDFReader
                 MessageBox.Show("File not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _pdfManager.Close();
@@ -56,29 +57,37 @@ namespace PDF_reader.PDFReader
 
         private void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
-            float newZoom = _settingsManager.ZoomIn();
-            DisplayPage(newZoom);
+            float newZoom = _settingsManager.ZoomOut();
+            DisplayPageWithZoom(newZoom);
         }
 
         private void ZoomOut_Click(object sender, RoutedEventArgs e)
         {
-            float newZoom = _settingsManager.ZoomOut();
-            DisplayPage(newZoom);
-
+            float newZoom = _settingsManager.ZoomIn();
+            DisplayPageWithZoom(newZoom);
         }
 
         private void NextPage_Click(object sender, RoutedEventArgs e)
         {
             _navHandler.NextPage();
             DisplayPage();
+            PageStatus.Text = $"Page: {_navHandler.GetCurrentPage()} / {_pdfManager.GetTotalPages()}";
         }
 
         private void PreviousPage_Click(object sender, RoutedEventArgs e)
         {
             _navHandler.PreviousPage();
             DisplayPage();
+            PageStatus.Text = $"Page: {_navHandler.GetCurrentPage()} / {_pdfManager.GetTotalPages()}";
         }
-        private void DisplayPage(float scale = 1.0f)
+        private void DisplayPage()
+        {
+            float scale = _settingsManager.ResetZoom(); // Get the current zoom level
+            Bitmap bitmap = _pdfManager.RenderPage(_navHandler.GetCurrentPage(), scale);
+            PdfImage.Source = BitmapToImageSource(bitmap);
+        }
+
+        private void DisplayPageWithZoom(float scale)
         {
             Bitmap bitmap = _pdfManager.RenderPage(_navHandler.GetCurrentPage(), scale);
             PdfImage.Source = BitmapToImageSource(bitmap);

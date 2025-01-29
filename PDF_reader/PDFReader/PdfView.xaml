@@ -39,7 +39,7 @@
 
         <StatusBar Grid.Row="3">
             <StatusBarItem>
-                <TextBlock x:Name="PageStatus" Text="Page: 1/1" />
+                <TextBlock x:Name="PageStatus" Text="Page: 1" />
             </StatusBarItem>
             <StatusBarItem>
                 <Button Content="Zoom In" Click="ZoomIn_Click" />

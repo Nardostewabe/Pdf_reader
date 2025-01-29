@@ -9,27 +9,34 @@ namespace PDF_reader.Navigation_Manager
 {
     internal class NavigationManager
     {
-     
-            private PdfManager _pdfManager;
 
-            public NavigationManager(PdfManager pdfManager)
-            {
-                _pdfManager = pdfManager;
-            }
+        private PdfManager _pdfManager;
+        private int _currentPage = 1;
 
-            public void NextPage()
-            {
-                if (_pdfManager.CurrentPage < _pdfManager.PageCount())
-                    _pdfManager.CurrentPage++;
-            }
-
-            public void PreviousPage()
-            {
-                if (_pdfManager.CurrentPage > 1)
-                    _pdfManager.CurrentPage--;
-            }
-
-            public int GetCurrentPage() => _pdfManager.CurrentPage;
+        public NavigationManager(PdfManager pdfManager)
+        {
+            _pdfManager = pdfManager;
         }
 
+        public void NextPage()
+        {
+            if (_currentPage < _pdfManager.GetTotalPages())
+            {
+                _currentPage++;
+            }
+        }
+
+        public void PreviousPage()
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+            }
+        }
+
+        public int GetCurrentPage()
+        {
+            return _currentPage;
+        }
     }
+}
